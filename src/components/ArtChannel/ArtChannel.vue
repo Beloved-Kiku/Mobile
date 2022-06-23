@@ -33,7 +33,7 @@
     <!-- 更多频道 -->
     <div class="more-channel-box">
       <div class="channel-title">
-        <span>点击添加更多频道：</span>
+        <span>{{isEdit ? '点击添加更多频道':'点击进入频道'}}</span>
       </div>
       <!-- 更多频道列表 -->
       <van-row>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+//导入删除接口
+import {DeleteApi} from '@/api'
 export default {
   name: "ArtChannel",
   data() {
@@ -71,14 +73,15 @@ export default {
       }
     },
     //删除
-    Delete(obj) {
+   async  Delete(obj) {
       if (this.isEdit) {
-        let UserNewArr = this.tabList.filter((item) => {
-          return item != obj;
-        });
-        this.tabList = UserNewArr;
-        this.getUserTabList.push(obj)
-        //this.tabList =index
+        //利用索引 判断出选择删除的 在原数组中的位置 进行删除
+        let index  =this.tabList.findIndex(item =>obj.id===item.id)
+        //删除点击的对象数组
+        this.tabList.splice(index,1);
+        const DeleteValue = await DeleteApi({
+          target:obj.id
+        })
       }
     },
   },

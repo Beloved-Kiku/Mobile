@@ -1,6 +1,7 @@
 //此处为请求统一管理文件
 //导入封装好的axios
-import axiosHttp from '@/request/request'
+import
+axiosHttp from '@/request/request'
 //引入Token
 import { getToken } from "@/utils/token";
 //用户推荐导航
@@ -45,11 +46,41 @@ export const ArtListApi = ({ channel_id, timestamp }) => {
     }
     //文章 不喜欢 
 export const ArtDisLikeApi = ({ target }) => {
+        return axiosHttp({
+            url: '/v1_0/article/dislikes',
+            method: "POST",
+            data: {
+                target
+            },
+        })
+    }
+    //用户删除指定Tab内容
+export const DeleteApi = ({ target }) => {
+        return axiosHttp({
+            url: `/v1_0/user/channels/${target}`,
+            method: 'DELETE'
+        })
+    }
+    //搜索联想界面补全
+export const SearchValue = ({ q }) => {
+        return axiosHttp({
+            url: '/v1_0/suggestion',
+            method: 'GET',
+            params: {
+                q
+            }
+        })
+
+    }
+    //搜索结果
+export const SearchIndex = ({ page, per_page, q }) => {
     return axiosHttp({
-        url: '/v1_0/article/dislikes',
-        method: "POST",
-        data: {
-            target
-        },
+        url: '/v1_0/search',
+        method: 'GET',
+        params: {
+            page,
+            per_page,
+            q
+        }
     })
 }

@@ -19,6 +19,8 @@ import Login from '@/views/Login'
 import layout from '@/views/layout'
 import Home from '@/views/layout/Home'
 import User from '@/views/layout/User'
+import Search from '@/views/layout/Search'
+import SearchValue from '@/views/layout/SearchValue'
 const routes = [{
         //路由重定向
         path: '/',
@@ -41,7 +43,15 @@ const routes = [{
         name: 'Login',
         path: '/Login',
         component: Login
-    },
+    }, {
+        name: 'Search',
+        path: '/Search',
+        component: Search
+    }, {
+        name: 'SearchValue',
+        path: '/SearchValue',
+        component: SearchValue
+    }
 ]
 
 const router = new VueRouter({

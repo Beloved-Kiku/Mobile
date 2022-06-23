@@ -5,7 +5,7 @@
         <template #left>
           {{ currentTime }}
         </template>
-        <template #right> <van-icon name="search" size="0.48rem" /> </template
+        <template #right @click="aaa"> <van-icon name="search" size="0.48rem" @click="goToSearch"/> </template
       ></van-nav-bar>
     </van-sticky>
     <!----Tab栏-->
@@ -89,6 +89,11 @@ export default {
     addTabs() {
       this.showPopup();
     },
+    goToSearch(){
+      this.$router.push({
+        name:'Search'
+      })
+    }
   },
   async created() {
     //获取默认Tab 列表 或者用户选择的tab
