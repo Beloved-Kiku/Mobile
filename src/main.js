@@ -16,7 +16,8 @@ new Vue({
     router,
     store,
     beforeCreate() {
-        Vue.prototype.$Bus = this
+        //挂载全局事件总线 子组件间通信
+        Vue.prototype.$EventBus = this
     },
     render: h => h(App)
 }).$mount('#app')

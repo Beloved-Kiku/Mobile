@@ -37,9 +37,8 @@ axiosHttp.interceptors.response.use(function(response) {
     return Promise.reject(error);
 });
 //对外导出时候 包裹一层 请求数据过滤体
-
 export default ({ url, method = 'GET', data = {}, params = {}, headers = {} }) => {
-    //aixos 请求会在原地返回一个Promise 对象 需要返回出去
+    //axios 请求会在原地返回一个Promise 对象 需要返回出去
     return axiosHttp({
         url,
         method,

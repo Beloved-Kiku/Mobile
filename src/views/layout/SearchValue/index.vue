@@ -1,24 +1,30 @@
 <template>
   <div class="SearchValue">
     <van-sticky>
-      <van-nav-bar title="BelovedHeadLine"
-      left-arrow
-      @click-left="onClickLeft"
-      > ></van-nav-bar>
+      <van-nav-bar title="BelovedHeadLine" left-arrow @click-left="onClickLeft">
+        ></van-nav-bar
+      >
     </van-sticky>
-    <van-swipe-cell v-for="(obj,index) in SearchValueList.results" :key="index">
+    <van-list
+   v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  @load="onLoad"
+  :immediate-check="false"
+>
+    <van-swipe-cell
+      v-for="(obj, index) in SearchValueList"
+      :key="index"
+      @click.native="gotoDeail(obj.art_id)"
+    >
       <van-card
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
+        :desc="obj.pubdate"
+        :title="obj.title"
         class="goods-card"
-        thumb="https://img01.yzcdn.cn/vant/cat.jpeg"
+        thumb="https://pic.imgdb.cn/item/62b491d30947543129730a93.jpg"
       />
-      <template #right>
-        <van-button square text="删除" type="danger" class="delete-button" />
-      </template>
     </van-swipe-cell>
+    </van-list>
   </div>
 </template>
 
@@ -31,7 +37,10 @@ export default {
   name: "SearchValue",
   data() {
     return {
-      SearchValueList: {},
+      SearchValueList: [],
+      successIcon: require("@/assets/Kikus.jpg"),
+      loading: false,
+      finished: false,
     };
   },
   async created() {
@@ -44,17 +53,45 @@ export default {
         q,
       });
       Notify({ type: "success", message: "GetMessageSuccess", duration: 5000 });
-      this.SearchValueList = SearchValue.data.data;
+      this.SearchValueList = SearchValue.data.data.results;
     } catch (error) {
       Notify({ type: "danger", message: error.message, duration: 5000 });
+      
     }
   },
   methods: {
-    getSearchValue() {
-      console.log("111");
+    onClickLeft() {
+      this.$router.back();
     },
-    onClickLeft(){
-        this.$router.back()
+    gotoDeail(id){
+      this.$router.push({
+        //传递文章id
+        path:`/ArtDeail/${id}`
+      })
+    },
+    //下滑加载
+   async  onLoad(){
+      //发送Ajax获得数据
+       let { page, q } = this.$route.query;
+       try {
+      const SearchValue = await SearchIndex({
+        page,
+        per_page:100,
+        q,
+      })
+      //判断返回数据 如果为空则说明后台已经没有数据了 则停止一切Ajax请求
+       if(SearchValue.data.data.results.length===0){
+        this.finished =true
+        return
+      }
+      this.SearchValueList = [...this.SearchValueList,...SearchValue.data.data.results]
+      Notify({ type: "success", message: "GetMessageSuccess", duration: 5000 });
+      //新旧数组合并  返回新的数组
+      this.loading = false
+    } catch (error) {
+      console.log(error.message);
+      Notify({ type: "danger", message: error.message, duration: 5000 });
+    }
     }
   },
 };

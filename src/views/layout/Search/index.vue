@@ -30,6 +30,7 @@
 
 <script>
 import { SearchValue } from "@/api";
+import { Notify } from 'vant';
 export default {
   name: "Search",
   data() {
@@ -45,9 +46,21 @@ export default {
     onClickLeft() {
       this.$router.back();
     },
-    //回车键的回调函数
+    //回车键 携带用户输入的参数跳转到结果页面
     search() {
-      console.log("1111");
+      if(this.SearchKeyWords===''){
+      Notify({ type: "warning", message: '请输入你想要搜索的', duration: 1000 });
+      }
+      else{
+      this.$router.push({
+        name:'SearchValue',
+        query:{
+          page: 1,
+          per_page:6,
+          q: this.SearchKeyWords,
+        }
+      })
+      }
     },
     //输入框内容发生改变时候触发事件
     //短时间内触发取消上一次事件 执行最后一次
@@ -76,16 +89,16 @@ export default {
     },
     //点击联想 路由跳转 到达 搜索结果页面
     goSearchValue() {
-      console.log("111");
       this.$router.push({
         name: "SearchValue",
         query: {
           page: 1,
-          per_page: 5,
+          per_page:6,
           q: this.SearchKeyWords,
         },
       });
     },
+ 
   },
 
   computed: {

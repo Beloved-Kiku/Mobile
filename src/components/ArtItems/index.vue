@@ -2,6 +2,7 @@
   <div class="ArtItem">
     <van-swipe-cell ref="aaa">
       <van-card
+        @click.native="gotoDeail(obj.art_id)"
         num="1"
         tag="Beloved"
         price="Free"
@@ -32,8 +33,8 @@ export default {
     return {
       show: false,
       isDelete: true,
-      successIcon : require('@/assets/Kikus.jpg'),
-      failedIcon :require('@/assets/Kiku.jpg')
+      successIcon: require("@/assets/Kikus.jpg"),
+      failedIcon: require("@/assets/Kiku.jpg"),
     };
   },
   props: ["obj"],
@@ -48,17 +49,23 @@ export default {
           console.log("222");
           Toast({
             message: "我们会减少推荐该类文章",
-            type:'success',
-            icon:this.successIcon,
+            type: "success",
+            icon: this.successIcon,
           });
         }
       } catch (error) {
         Toast({
-          type:'fail',
-          message:error.response.status,
-          icon:failedIcon
-        })
+          type: "fail",
+          message: error.response.status,
+          icon: failedIcon,
+        });
       }
+    },
+    //路由跳转到详情页面
+    gotoDeail(id) {
+      this.$router.push({
+        path: `/ArtDeail/${id}`,
+      });
     },
   },
 };
@@ -73,11 +80,11 @@ export default {
 .delete-button {
   height: 100%;
 }
- /deep/.van-toast__text{
+/deep/.van-toast__text {
   font-size: 1.25rem /* 100/80 */;
   color: red;
 }
- .van-toast  {
+.van-toast {
   width: 8.75rem /* 700/80 */;
   height: 3.75rem /* 300/80 */;
 }

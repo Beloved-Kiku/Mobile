@@ -64,7 +64,6 @@ export default {
     },
     // 处理用户向下刷新的事件
     // 数据不更新
-
   },
   // 页面挂载获取列表数据
    async created() {
